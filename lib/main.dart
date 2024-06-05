@@ -1,6 +1,7 @@
 //RIZKY AGUNG NURBASKORO
 //213925
 
+// Main App
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'custom_gauge.dart';
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      debugShowCheckedModeBanner: false, // Set debugShowCheckedModeBanner to false
+      debugShowCheckedModeBanner: false,
       home: MyHomePage(title: 'Factory App'),
     );
   }
@@ -69,10 +70,12 @@ class _MyHomePageState extends State<MyHomePage> {
     if (factoryId == 1) {
       setState(() {
         factory1Employees.add(Employee(name: name, phoneNumber: phoneNumber));
+        print('Factory 1 Employees: $factory1Employees');
       });
     } else if (factoryId == 2) {
       setState(() {
         factory2Employees.add(Employee(name: name, phoneNumber: phoneNumber));
+        print('Factory 2 Employees: $factory2Employees');
       });
     }
   }
@@ -163,6 +166,7 @@ class Employee {
   Employee({required this.name, required this.phoneNumber});
 }
 
+
 class FactoryButtonBar extends StatelessWidget {
   final Function(int) switchFactory;
 
@@ -220,7 +224,6 @@ class FactoryButtonBar extends StatelessWidget {
   }
 }
 
-// Profile Page
 class ProfilePage extends StatefulWidget {
   final int factoryId;
   final List<Employee> employees;
@@ -252,7 +255,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Factory ${widget.factoryId} Employees'),
+        title: Text('Factory ${widget.factoryId} Employees', key: Key('profileTitle')),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -261,49 +264,49 @@ class _ProfilePageState extends State<ProfilePage> {
           children: [
             Text(
               'Factory ${widget.factoryId} Employees',
+              key: Key('profileHeaderText'),
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 
-16.0),
+            SizedBox(height: 16.0),
             Expanded(
-  child: ListView.builder(
-    itemCount: widget.employees.length,
-    itemBuilder: (context, index) {
-      final employee = widget.employees[index];
-      return Container(
-        margin: EdgeInsets.symmetric(vertical: 8.0),
-        padding: EdgeInsets.all(12.0),
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Name: ${employee.name}',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+              child: ListView.builder(
+                itemCount: widget.employees.length,
+                itemBuilder: (context, index) {
+                  final employee = widget.employees[index];
+                  return Container(
+                    key: Key('employee${employee.name}'),
+                    margin: EdgeInsets.symmetric(vertical: 8.0),
+                    padding: EdgeInsets.all(12.0),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Name: ${employee.name}',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 8.0),
+                        Text(
+                          'Phone Number: ${employee.phoneNumber}',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
             ),
-            SizedBox(height: 8.0),
-            Text(
-              'Phone Number: ${employee.phoneNumber}',
-              style: TextStyle(
-                fontSize: 14,
-              ),
-            ),
-          ],
-        ),
-      );
-    },
-  ),
-),
-
             ElevatedButton(
               onPressed: () {
                 showDialog(
@@ -316,6 +319,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           TextFormField(
+                            key: Key('nameField'),
                             controller: _nameController,
                             decoration: InputDecoration(labelText: 'Name'),
                             validator: (value) {
@@ -326,9 +330,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             },
                           ),
                           TextFormField(
+                            key: Key('phoneField'),
                             controller: _phoneNumberController,
-                            decoration:
-                                InputDecoration(labelText: 'Phone Number'),
+                            decoration: InputDecoration(labelText: 'Phone Number'),
                             keyboardType: TextInputType.phone,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -343,6 +347,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     actions: [
                       TextButton(
                         onPressed: () {
+                          print('Dialog canceled');
                           Navigator.of(context).pop();
                         },
                         child: Text('Cancel'),
@@ -350,11 +355,14 @@ class _ProfilePageState extends State<ProfilePage> {
                       TextButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            widget.onAddEmployee(_nameController.text,
-                                _phoneNumberController.text);
+                            print('Form validated');
+                            widget.onAddEmployee(_nameController.text, _phoneNumberController.text);
                             Navigator.of(context).pop();
+                            print('Employee added: ${_nameController.text}, ${_phoneNumberController.text}');
                             _nameController.clear();
                             _phoneNumberController.clear();
+                          } else {
+                            print('Form validation failed');
                           }
                         },
                         child: Text('Add'),
@@ -373,7 +381,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 }
 
-//Home Page
+// HomePage
 class HomePage extends StatelessWidget {
   final int factoryId;
   final Map<String, dynamic> data;
@@ -392,15 +400,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Factory $factoryId Status'), // Ensure this text is what you are looking for
-        actions: [
-          IconButton(
-            icon: Icon(Icons.settings),
-            onPressed: () {
-              // Handle settings button press
-            },
-          ),
-        ],
+        title: Text('Factory $factoryId Status', key: Key('homeTitle')),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -481,6 +481,8 @@ class HomePage extends StatelessWidget {
   }
 }
 
+
+
 // Settings Page
 class SettingsPage extends StatefulWidget {
   final int factoryId;
@@ -517,9 +519,7 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   @override
- @override
-@override
-Widget build(BuildContext context) {
+ Widget build(BuildContext context) {
   return Scaffold(
     appBar: AppBar(
       title: Text('Factory ${widget.factoryId} Settings'),
@@ -531,6 +531,7 @@ Widget build(BuildContext context) {
         children: [
           Text(
             'Factory ${widget.factoryId} Settings',
+            key: Key('settingsTitle'),
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -629,8 +630,6 @@ Widget build(BuildContext context) {
   );
 }
 
-
-
   @override
   void dispose() {
     _steamPressureController.dispose();
@@ -640,3 +639,4 @@ Widget build(BuildContext context) {
     super.dispose();
   }
 }
+
