@@ -10,6 +10,9 @@ void main() {
     app.main();
     await tester.pumpAndSettle();
 
+    // Debugging print statement
+    print(find.text('Factory 1 Status').evaluate().toString());
+
     // Verify the home page loads with the expected text
     expect(find.text('Factory 1 Status'), findsOneWidget);
 

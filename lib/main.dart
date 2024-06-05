@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'custom_gauge.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -16,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false, // Set debugShowCheckedModeBanner to false
       home: MyHomePage(title: 'Factory App'),
     );
   }
@@ -70,12 +72,10 @@ class _MyHomePageState extends State<MyHomePage> {
     if (factoryId == 1) {
       setState(() {
         factory1Employees.add(Employee(name: name, phoneNumber: phoneNumber));
-        print('Factory 1 Employees: $factory1Employees');
       });
     } else if (factoryId == 2) {
       setState(() {
         factory2Employees.add(Employee(name: name, phoneNumber: phoneNumber));
-        print('Factory 2 Employees: $factory2Employees');
       });
     }
   }
@@ -158,6 +158,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+
 // Employee Class
 class Employee {
   final String name;
@@ -180,42 +181,47 @@ class FactoryButtonBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          ElevatedButton(
-            onPressed: () {
-              switchFactory(1);
-            },
-            style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.symmetric(
-                horizontal: 32.0,
-                vertical: 16.0,
+          Expanded(
+            child: ElevatedButton(
+              onPressed: () {
+                switchFactory(1);
+              },
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 32.0,
+                  vertical: 16.0,
+                ),
               ),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.factory),
-                SizedBox(width: 8.0),
-                Text('Factory 1'),
-              ],
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.factory),
+                  SizedBox(width: 8.0),
+                  Text('Factory 1'),
+                ],
+              ),
             ),
           ),
-          ElevatedButton(
-            onPressed: () {
-              switchFactory(2);
-            },
-            style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.symmetric(
-                horizontal: 32.0,
-                vertical: 16.0,
+          SizedBox(width: 16.0), // Add spacing between buttons
+          Expanded(
+            child: ElevatedButton(
+              onPressed: () {
+                switchFactory(2);
+              },
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 32.0,
+                  vertical: 16.0,
+                ),
               ),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.factory),
-                SizedBox(width: 8.0),
-                Text('Factory 2'),
-              ],
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.factory),
+                  SizedBox(width: 8.0),
+                  Text('Factory 2'),
+                ],
+              ),
             ),
           ),
         ],
@@ -223,6 +229,7 @@ class FactoryButtonBar extends StatelessWidget {
     );
   }
 }
+
 
 class ProfilePage extends StatefulWidget {
   final int factoryId;
@@ -480,8 +487,6 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-
-
 
 // Settings Page
 class SettingsPage extends StatefulWidget {
