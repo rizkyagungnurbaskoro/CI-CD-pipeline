@@ -1,10 +1,13 @@
-//RIZKY AGUNG NURBASKORO
-//213925
-
-// Main App
+// main.dart
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'custom_gauge.dart';
+
+const Color customBeige = Color(0xFFF1E5D1);
+const Color customPink = Color(0xFFDBB5B5);
+const Color customLightBrown = Color(0xFFC39898);
+const Color customBrown = Color(0xFF987070);
 
 void main() {
   runApp(MyApp());
@@ -14,12 +17,271 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Factory App',
       theme: ThemeData(
+        textTheme: GoogleFonts.poppinsTextTheme(),
         primarySwatch: Colors.blue,
       ),
-      debugShowCheckedModeBanner: false, // Set debugShowCheckedModeBanner to false
-      home: MyHomePage(title: 'Factory App'),
+      debugShowCheckedModeBanner: false,
+      initialRoute: '/',
+      routes: {
+        '/': (context) => ActivationPage(),
+        '/factoryApp': (context) => MyHomePage(title: 'Factory App'),
+      },
+    );
+  }
+}
+
+class ActivationPage extends StatefulWidget {
+  const ActivationPage({super.key});
+
+  @override
+  State<ActivationPage> createState() => _ActivationState();
+}
+
+class _ActivationState extends State<ActivationPage> {
+  bool accountActivation = true;
+
+  void toggleContainer() {
+    setState(() {
+      accountActivation = !accountActivation;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Activation Page'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: SizedBox(
+                width: 200,
+                height: 100,
+                child: Image.network(
+                    'https://upm.edu.my/assets/images23/20170406143426UPM-New_FINAL.jpg'),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(left: 16.0),
+              child: Text(
+                'Welcome!',
+                style: TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Center(
+              child: SizedBox(
+                width: 500,
+                height: 500,
+                child: accountActivation
+                    ? AccountActivationContainer(toggleContainer)
+                    : CodeActivationContainer(() {
+                        Navigator.pushReplacementNamed(
+                            context, '/factoryApp');
+                      }),
+              ),
+            ),
+            SizedBox(height: 30),
+            Center(
+              child: Text(
+                'Disclaimer | Privacy Statement',
+                style: TextStyle(
+                    color: Colors.blue,
+                    decoration: TextDecoration.underline),
+              ),
+            ),
+            SizedBox(height: 10),
+            SizedBox(
+              width: 350,
+              child: Text(
+                  'Copyright UPM & Kejuruteraan Minyak Sawit CCS Sdn. Bhd.',
+                  textAlign: TextAlign.center),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class AccountActivationContainer extends StatefulWidget {
+  final VoidCallback onButtonPressed;
+
+  AccountActivationContainer(this.onButtonPressed);
+
+  @override
+  State<AccountActivationContainer> createState() =>
+      _AccountActivationContainerState();
+}
+
+class _AccountActivationContainerState
+    extends State<AccountActivationContainer> {
+  bool isChecked = false;
+  final TextEditingController _phoneNumberController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: customPink,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 3,
+            blurRadius: 5,
+          ),
+        ],
+      ),
+      margin: const EdgeInsets.all(20),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(height: 50),
+          SizedBox(
+            height: 100,
+            width: 300,
+            child: Text(
+              'Enter your mobile number to activate your account',
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'images/malaysia.png',
+                height: 30,
+                width: 30,
+                fit: BoxFit.contain,
+              ),
+              SizedBox(width: 10),
+              Text(
+                '+60',
+                style: TextStyle(fontSize: 20),
+              ),
+              SizedBox(width: 10),
+              SizedBox(
+                height: 40,
+                width: 180,
+                child: TextField(
+                  controller: _phoneNumberController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    fillColor: Colors.white,
+                    filled: true,
+                  ),
+                  keyboardType: TextInputType.phone,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Checkbox(
+                value: isChecked,
+                onChanged: (value) {
+                  setState(() {
+                    isChecked = value!;
+                  });
+                },
+              ),
+              Text('I agree to the terms and conditions'),
+            ],
+          ),
+          SizedBox(height: 50),
+          Center(
+            child: ElevatedButton(
+              onPressed: isChecked
+                  ? () {
+                      widget.onButtonPressed();
+                    }
+                  : null,
+              child: Text(
+                'Get Activation Code',
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class CodeActivationContainer extends StatelessWidget {
+  final VoidCallback onButtonPressed;
+
+  CodeActivationContainer(this.onButtonPressed);
+
+  final TextEditingController _otpController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: customBeige,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 3,
+            blurRadius: 5,
+          ),
+        ],
+      ),
+      margin: const EdgeInsets.all(20),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(height: 50),
+          SizedBox(
+            height: 100,
+            width: 300,
+            child: Text(
+              'Enter the activation code you received via SMS',
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
+          SizedBox(height: 20),
+          SizedBox(
+            height: 60,
+            width: 240,
+            child: TextField(
+              controller: _otpController,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                fillColor: Colors.white,
+                filled: true,
+              ),
+              keyboardType: TextInputType.number,
+            ),
+          ),
+          SizedBox(height: 50),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                onButtonPressed();
+              },
+              child: Text(
+                'Activate',
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -35,9 +297,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
-  int _selectedFactory = 1; // Default to Factory 1
+  int _selectedFactory = 1;
 
-  // Data for Factory 1
   List<Employee> factory1Employees = [];
   Map<String, dynamic> factory1Data = {
     'steamPressure': 100,
@@ -52,7 +313,6 @@ class _MyHomePageState extends State<MyHomePage> {
     'powerFrequency': 55,
   };
 
-  // Data for Factory 2
   List<Employee> factory2Employees = [];
   Map<String, dynamic> factory2Data = {
     'steamPressure': 120,
@@ -67,7 +327,6 @@ class _MyHomePageState extends State<MyHomePage> {
     'powerFrequency': 50,
   };
 
-  // Function to add an employee
   void _addEmployee(int factoryId, String name, String phoneNumber) {
     if (factoryId == 1) {
       setState(() {
@@ -80,7 +339,6 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  // Function to switch between factories
   void _switchFactory(int factoryId) {
     setState(() {
       _selectedFactory = factoryId;
@@ -158,15 +416,12 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-
-// Employee Class
 class Employee {
   final String name;
   final String phoneNumber;
 
   Employee({required this.name, required this.phoneNumber});
 }
-
 
 class FactoryButtonBar extends StatelessWidget {
   final Function(int) switchFactory;
@@ -181,47 +436,42 @@ class FactoryButtonBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Expanded(
-            child: ElevatedButton(
-              onPressed: () {
-                switchFactory(1);
-              },
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 32.0,
-                  vertical: 16.0,
-                ),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.factory),
-                  SizedBox(width: 8.0),
-                  Text('Factory 1'),
-                ],
+          ElevatedButton(
+            onPressed: () {
+              switchFactory(1);
+            },
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(
+                horizontal: 32.0,
+                vertical: 16.0,
               ),
             ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.factory),
+                SizedBox(width: 8.0),
+                Text('Factory 1'),
+              ],
+            ),
           ),
-          SizedBox(width: 16.0), // Add spacing between buttons
-          Expanded(
-            child: ElevatedButton(
-              onPressed: () {
-                switchFactory(2);
-              },
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 32.0,
-                  vertical: 16.0,
-                ),
+          ElevatedButton(
+            onPressed: () {
+              switchFactory(2);
+            },
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(
+                horizontal: 32.0,
+                vertical: 16.0,
               ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.factory),
-                  SizedBox(width: 8.0),
-                  Text('Factory 2'),
-                ],
-              ),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.factory),
+                SizedBox(width: 8.0),
+                Text('Factory 2'),
+              ],
             ),
           ),
         ],
@@ -229,7 +479,6 @@ class FactoryButtonBar extends StatelessWidget {
     );
   }
 }
-
 
 class ProfilePage extends StatefulWidget {
   final int factoryId;
@@ -252,17 +501,14 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final _formKey = GlobalKey<FormState>();
 
-  // Controller for Name TextField
   final _nameController = TextEditingController();
-
-  // Controller for Phone Number TextField
   final _phoneNumberController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Factory ${widget.factoryId} Employees', key: Key('profileTitle')),
+        title: Text('Factory ${widget.factoryId} Employees'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -271,7 +517,6 @@ class _ProfilePageState extends State<ProfilePage> {
           children: [
             Text(
               'Factory ${widget.factoryId} Employees',
-              key: Key('profileHeaderText'),
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -284,7 +529,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 itemBuilder: (context, index) {
                   final employee = widget.employees[index];
                   return Container(
-                    key: Key('employee${employee.name}'),
                     margin: EdgeInsets.symmetric(vertical: 8.0),
                     padding: EdgeInsets.all(12.0),
                     decoration: BoxDecoration(
@@ -326,7 +570,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           TextFormField(
-                            key: Key('nameField'),
                             controller: _nameController,
                             decoration: InputDecoration(labelText: 'Name'),
                             validator: (value) {
@@ -337,9 +580,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             },
                           ),
                           TextFormField(
-                            key: Key('phoneField'),
                             controller: _phoneNumberController,
-                            decoration: InputDecoration(labelText: 'Phone Number'),
+                            decoration:
+                                InputDecoration(labelText: 'Phone Number'),
                             keyboardType: TextInputType.phone,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -354,7 +597,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     actions: [
                       TextButton(
                         onPressed: () {
-                          print('Dialog canceled');
                           Navigator.of(context).pop();
                         },
                         child: Text('Cancel'),
@@ -362,14 +604,11 @@ class _ProfilePageState extends State<ProfilePage> {
                       TextButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            print('Form validated');
-                            widget.onAddEmployee(_nameController.text, _phoneNumberController.text);
+                            widget.onAddEmployee(_nameController.text,
+                                _phoneNumberController.text);
                             Navigator.of(context).pop();
-                            print('Employee added: ${_nameController.text}, ${_phoneNumberController.text}');
                             _nameController.clear();
                             _phoneNumberController.clear();
-                          } else {
-                            print('Form validation failed');
                           }
                         },
                         child: Text('Add'),
@@ -388,7 +627,6 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 }
 
-// HomePage
 class HomePage extends StatelessWidget {
   final int factoryId;
   final Map<String, dynamic> data;
@@ -407,7 +645,15 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Factory $factoryId Status', key: Key('homeTitle')),
+        title: Text('Factory $factoryId Status'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              // Handle settings button press
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -488,7 +734,6 @@ class HomePage extends StatelessWidget {
   }
 }
 
-// Settings Page
 class SettingsPage extends StatefulWidget {
   final int factoryId;
   final Map<String, dynamic> data;
@@ -508,7 +753,6 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  // Controllers for TextFields
   final _steamPressureController = TextEditingController();
   final _steamFlowController = TextEditingController();
   final _waterLevelController = TextEditingController();
@@ -524,116 +768,115 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   @override
- Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      title: Text('Factory ${widget.factoryId} Settings'),
-    ),
-    body: Padding(
-      padding: const EdgeInsets.all(16.0),
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Factory ${widget.factoryId} Settings'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Factory ${widget.factoryId} Settings',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 16.0),
+            Expanded(
+              child: SingleChildScrollView(
+                child: GridView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 16.0,
+                    mainAxisSpacing: 16.0,
+                  ),
+                  itemCount: 4,
+                  itemBuilder: (context, index) {
+                    switch (index) {
+                      case 0:
+                        return _buildSettingTile(
+                          'Steam Pressure',
+                          _steamPressureController,
+                          (value) => widget.onDataChanged('steamPressure', value),
+                        );
+                      case 1:
+                        return _buildSettingTile(
+                          'Steam Flow',
+                          _steamFlowController,
+                          (value) => widget.onDataChanged('steamFlow', value),
+                        );
+                      case 2:
+                        return _buildSettingTile(
+                          'Water Level',
+                          _waterLevelController,
+                          (value) => widget.onDataChanged('waterLevel', value),
+                        );
+                      case 3:
+                        return _buildSettingTile(
+                          'Power Frequency',
+                          _powerFrequencyController,
+                          (value) => widget.onDataChanged('powerFrequency', value),
+                        );
+                      default:
+                        return Container();
+                    }
+                  },
+                ),
+              ),
+            ),
+            FactoryButtonBar(switchFactory: widget.switchFactory),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSettingTile(String title, TextEditingController controller, Function(dynamic) onChanged) {
+    return Container(
+      margin: EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.grey),
+        borderRadius: BorderRadius.circular(12.0),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Factory ${widget.factoryId} Settings',
-            key: Key('settingsTitle'),
+            title,
             style: TextStyle(
-              fontSize: 24,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 16.0),
-          Expanded(
-            child: SingleChildScrollView(
-              child: GridView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16.0, // Adjust the spacing between tiles
-                  mainAxisSpacing: 16.0,
-                ),
-                itemCount: 4, // 2x2 grid, so 4 tiles
-                itemBuilder: (context, index) {
-                  switch (index) {
-                    case 0:
-                      return _buildSettingTile(
-                        'Steam Pressure',
-                        _steamPressureController,
-                        (value) => widget.onDataChanged('steamPressure', value),
-                      );
-                    case 1:
-                      return _buildSettingTile(
-                        'Steam Flow',
-                        _steamFlowController,
-                        (value) => widget.onDataChanged('steamFlow', value),
-                      );
-                    case 2:
-                      return _buildSettingTile(
-                        'Water Level',
-                        _waterLevelController,
-                        (value) => widget.onDataChanged('waterLevel', value),
-                      );
-                    case 3:
-                      return _buildSettingTile(
-                        'Power Frequency',
-                        _powerFrequencyController,
-                        (value) => widget.onDataChanged('powerFrequency', value),
-                      );
-                    default:
-                      return Container();
-                  }
-                },
-              ),
+          SizedBox(height: 8.0),
+          TextFormField(
+            controller: controller,
+            keyboardType: TextInputType.number,
+            onChanged: (value) {
+              onChanged(double.tryParse(value) ?? 0.0);
+            },
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
             ),
           ),
-          FactoryButtonBar(switchFactory: widget.switchFactory),
         ],
       ),
-    ),
-  );
-}
-
- Widget _buildSettingTile(String title, TextEditingController controller, Function(dynamic) onChanged) {
-  return Container(
-    margin: EdgeInsets.all(8.0),
-    padding: EdgeInsets.all(16.0),
-    decoration: BoxDecoration(
-      color: Colors.white, // Set a background color to prevent it from appearing all white
-      border: Border.all(color: Colors.grey),
-      borderRadius: BorderRadius.circular(12.0),
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        SizedBox(height: 8.0),
-        TextFormField(
-          controller: controller,
-          keyboardType: TextInputType.number,
-          onChanged: (value) {
-            onChanged(double.tryParse(value) ?? 0.0);
-          },
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-          decoration: InputDecoration(
-            border: OutlineInputBorder(), // Add border to the TextFormField
-            isDense: true,
-            contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0), // Adjust content padding
-          ),
-        ),
-      ],
-    ),
-  );
-}
+    );
+  }
 
   @override
   void dispose() {
@@ -644,4 +887,3 @@ class _SettingsPageState extends State<SettingsPage> {
     super.dispose();
   }
 }
-
