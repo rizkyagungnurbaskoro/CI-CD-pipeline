@@ -392,7 +392,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Factory $factoryId Status'),
+        title: Text('Factory $factoryId Status'), // Ensure this text is what you are looking for
         actions: [
           IconButton(
             icon: Icon(Icons.settings),
