@@ -4,15 +4,15 @@
     <application>
         <activity
             android:name="androidx.test.core.app.InstrumentationActivityInvoker$BootstrapActivity"
-            android:exported="true/false"/>
+            android:exported="true"/>
         
         <activity
             android:name="androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity"
-            android:exported="true/false"/>
+            android:exported="true"/>
         
         <activity
             android:name="androidx.test.core.app.InstrumentationActivityInvoker$EmptyFloatingActivity"
-            android:exported="true/false"/>
+            android:exported="true"/>
     </application>
 
 </manifest>
