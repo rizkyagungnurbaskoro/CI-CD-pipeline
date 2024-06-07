@@ -89,11 +89,11 @@ workflows:
           gcloud --quiet config set project $FIREBASE_PROJECT
 
        gcloud firebase test android run \
-      --type instrumentation \
-      --app build/app/outputs/apk/debug/app-debug.apk \
-      --test build/app/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
-      --timeout 3m
-      
+          --type instrumentation \
+          --app build/app/outputs/apk/debug/app-debug.apk \
+          --test build/app/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
+          --timeout 3m
+
       - name: Build app for testing
         script: |
           set -ex
