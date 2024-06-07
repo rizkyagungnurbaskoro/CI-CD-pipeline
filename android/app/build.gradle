@@ -1,7 +1,7 @@
 plugins {
     id "com.android.application"
     id "kotlin-android"
-    id "dev.flutter.flutter-gradle-plugin" // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+    id "dev.flutter.flutter-gradle-plugin"
 }
 
 // Define properties at the top level
@@ -20,8 +20,8 @@ if (localPropertiesFile.exists()) {
 
 android {
     namespace = "com.example.flutter_application_1"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    compileSdk = 30
+    ndkVersion = "21.1.6352462"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -30,8 +30,8 @@ android {
 
     defaultConfig {
         applicationId = "com.example.flutter_application_1"
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
+        minSdk = 16
+        targetSdk = 30
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -57,6 +57,15 @@ dependencies {
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    androidTestImplementation 'dev.flutter.plugins:flutter_test:latest_version'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0' // Ensure consistent version
+    // Note: Remove the line for flutter_test as it's not available in the repositories
+}
+
+// Ensure the repositories block is present in the correct scope
+repositories {
+    google()
+    mavenCentral()
+    maven {
+        url 'https://storage.googleapis.com/download.flutter.io'
+    }
 }
