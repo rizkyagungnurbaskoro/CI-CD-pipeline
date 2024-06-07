@@ -18,7 +18,7 @@ if (localPropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.example.flutter_application_1"
+    namespace = "dev.flutterexplained"
     compileSdk = 33
     ndkVersion = "21.1.6352462"
 
@@ -28,7 +28,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.flutter_application_1"
+        applicationId = "dev.flutterexplained"
         minSdk = 21
         targetSdk = 33
         versionCode = flutterVersionCode.toInteger()
