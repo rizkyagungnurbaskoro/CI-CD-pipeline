@@ -20,7 +20,7 @@ if (localPropertiesFile.exists()) {
 
 android {
     namespace = "com.example.flutter_application_1"
-    compileSdk = 33 // Updated to at least 31
+    compileSdk = 33
     ndkVersion = "21.1.6352462"
 
     compileOptions {
@@ -30,8 +30,8 @@ android {
 
     defaultConfig {
         applicationId = "com.example.flutter_application_1"
-        minSdk = 16
-        targetSdk = 33 // Updated to at least 31
+        minSdk = 21 // Updated to 21
+        targetSdk = 33
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
