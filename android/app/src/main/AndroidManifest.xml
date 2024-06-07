@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="dev.flutterexplained">
+    package="package.com.example.flutter_appliaction1">
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
