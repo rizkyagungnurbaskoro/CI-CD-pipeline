@@ -4,7 +4,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
-import com.example.flutter_application_1.MainActivity; // Correct import
+import com.example.flutter_application_1.MainActivity;
 
 @RunWith(AndroidJUnit4.class)
 public class MainActivityTest {
