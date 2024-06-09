@@ -1,4 +1,4 @@
-package dev.flutterexplained;
+package java.dev.flutterexplained;
 
 import androidx.test.rule.ActivityTestRule;
 import dev.flutter.plugins.integration_test.FlutterTestRunner;
