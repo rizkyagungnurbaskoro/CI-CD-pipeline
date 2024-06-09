@@ -1,12 +1,16 @@
-package java.dev.flutterexplained;
+package dev.flutterexplained;
 
-import androidx.test.rule.ActivityTestRule;
-import dev.flutter.plugins.integration_test.FlutterTestRunner;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
+import com.example.flutter_application_1.MainActivity; // Correct import
 
-@RunWith(FlutterTestRunner.class)
+@RunWith(AndroidJUnit4.class)
 public class MainActivityTest {
+
     @Rule
-    public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class, true, false);
+    public ActivityScenarioRule<MainActivity> rule = new ActivityScenarioRule<>(MainActivity.class);
+
+    // Add your test methods here
 }
